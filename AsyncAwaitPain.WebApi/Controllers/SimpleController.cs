@@ -10,12 +10,12 @@ using System.Web.Http.Results;
 namespace AsyncAwaitPain.WebApi.Controllers
 {
     [AllowAnonymous]
-    [RoutePrefix("api/AsyncVoid")]
-    public class AsyncVoidController : ApiController
+    [RoutePrefix("api/Simple")]
+    public class SimpleController : ApiController
     {
-        private string delayFinished = "Failure";
+        private string delayFinished;
 
-        [Route("Sync")]
+        [Route("Abandon")]
         [HttpGet]
         public IHttpActionResult Get()
         {
@@ -38,9 +38,34 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
         }
 
+        [HttpGet]
+        [Route("Wait")]
+        public IHttpActionResult Wait()
+        {
+
+            if (!Delay().Wait(100))
+            {
+                delayFinished = "Blocked";
+            }
+
+            return Ok(delayFinished);
+        }
+
+        [HttpGet]
+        [Route("GetAwaiter")]
+        public IHttpActionResult GetAwaiter()
+        {
+
+            Delay().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            return Ok(delayFinished);
+
+        }
+
         public async Task Delay()
         {
-            await Task.Delay(500);
+            delayFinished = "Failure";
+            await Task.Delay(50);
             delayFinished = "Completed successfully";
         }
 

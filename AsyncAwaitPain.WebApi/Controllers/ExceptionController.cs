@@ -10,14 +10,14 @@ using System.Web.Http.Results;
 namespace AsyncAwaitPain.WebApi.Controllers
 {
     [AllowAnonymous]
-    [RoutePrefix("api/AsyncVoidException")]
-    public class AsyncVoidExceptionController : ApiController
+    [RoutePrefix("api/Exception")]
+    public class ExceptionController : ApiController
     {
 
         private string delayFinished = "Failure";
 
         [HttpGet]
-        [Route("AsyncTaskThrowException")]
+        [Route("AsyncTask")]
         public async Task<IHttpActionResult> AsyncTaskThrowException()
         {
             try
@@ -33,12 +33,12 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
 
         [HttpGet]
-        [Route("WaitThrowException")]
-        public IHttpActionResult WaitThrowException()
+        [Route("Wait")]
+        public IHttpActionResult Wait()
         {
             try
             {
-                if (!DelayConfigureAwaitFalse().Wait(3000))
+                if (!DelayConfigureAwaitFalse().Wait(100))
                 {
                     delayFinished = "Blocked";
                 }
@@ -51,9 +51,15 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
         }
 
+        public async Task DelayConfigureAwaitFalse()
+        {
+            await Task.Delay(50).ConfigureAwait(false);
+            throw new Exception("Failure");
+        }
+
         [HttpGet]
-        [Route("AsyncThrowException")]
-        public IHttpActionResult AsyncThrowException()
+        [Route("Abandon")]
+        public IHttpActionResult Abandon()
         {
             try
             {
@@ -67,11 +73,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
             return Ok("Success (?)");
         }
 
-        public async Task DelayConfigureAwaitFalse()
-        {
-            await Task.Delay(500).ConfigureAwait(false);
-            throw new Exception("Failure");
-        }
+
 
     }
 }

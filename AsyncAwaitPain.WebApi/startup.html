@@ -2,27 +2,103 @@
 <html>
 <head>
     <title></title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
 </head>
 <body>
     <p>
-        <a href="/api/asyncvoid/sync">AsyncVoid - Sync</a>
-        <a href="/api/asyncvoid/async">AsyncVoid - Async</a>
+        <table>
+            <tr><td><b>Simple</b></td></tr>
+            <tr>
+                <td>
+                    <a href="/api/Simple/abandon">Abandon</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/api/Simple/Async">Correct async task</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/api/Simple/wait">Wait</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/api/Simple/GetAwaiter">GetAwaiter</a>
+                </td>
+            </tr>
+        </table>
+
     </p>
 
     <p>
-        <a href="/api/AsyncVoidContinueAwait/wait">AsyncVoid - Wait()</a>
-        <a href="/api/AsyncVoidContinueAwait/ConfigureAwaitFalse1">AsyncVoid - ConfigureAwait(false)</a>
-        <a href="/api/AsyncVoidContinueAwait/ConfigureAwaitFalse2">AsyncVoid - ConfigureAwait(false)</a>
-        <a href="/api/AsyncVoidContinueAwait/ConfigureAwaitFalse3">AsyncVoid - ConfigureAwait(false)</a>
-        <a href="/api/AsyncVoidContinueAwait/ConfigureAwaitFalse4">AsyncVoid - ConfigureAwait(false)</a>
+        <table>
+            <tr><td><b>ConfigureAwait(false)</b></td></tr>
+            <tr>
+                <td>
+                    <a href="/api/ConfigureAwaitFalse/wait">Wait</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/api/ConfigureAwaitFalse/GetAwaiter">GetAwaiter</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/api/ConfigureAwaitFalse/NestedConfigureAwait">NestedConfigureAwait</a>
+                </td>
+            </tr>
+        </table>
     </p>
 
-    <p>
-        <a href="/api/AsyncVoidException/AsyncTaskThrowException">Async Task Throw Exception</a>
-        <a href="/api/AsyncVoidException/WaitThrowException">WaitThrowException</a>
-        <a href="/api/AsyncVoidException/AsyncThrowException">AsyncThrowException</a>
-    </p>
+
+    <table>
+        <tr>
+            <td>
+                <b>Exception</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/api/Exception/AsyncTask">Correct async Task method</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/api/Exception/Wait">Wait</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/api/Exception/Abandon">Abandon</a>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>
+                <b>Async Constructor</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/api/AsyncConstructor/New">New</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/api/AsyncConstructor/WorkDammit">Work Dammit</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/api/AsyncConstructor/Exception">Exception</a>
+            </td>
+        </tr>
+    </table>
 
     <p>
         <a href="/api/garbagecollector">Collect</a>

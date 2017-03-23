@@ -1,0 +1,39 @@
+﻿<Window x:Class="AsyncAwaitPain.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AsyncAwaitPain.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525"
+        x:Name="mainWindow">
+    <Window.Resources>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto "></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="{Binding Path=DelayCount, ElementName=mainWindow, FallbackValue=NaN}"></TextBlock>
+            <TextBlock Text="{Binding Path=MethodCount, ElementName=mainWindow, FallbackValue=NaN}"></TextBlock>
+            <Button x:Name="Abandon" Click="Abandon_Click">Abandon</Button>
+            <Button x:Name="Wait" Click="Wait_Click">Wait</Button>
+            <Button x:Name="Collect" Click="Collect_Click">GC Collect</Button>
+            <TextBlock>
+                <Run>Thread Count</Run>
+                <Run Text="{Binding Path=ThreadCount, ElementName=mainWindow}"></Run>
+            </TextBlock>
+        </StackPanel>
+        <local:Exception Grid.Column="1"></local:Exception>
+        <local:ConfigureAwait Grid.Column="2"></local:ConfigureAwait>
+        <local:AsyncConstructor Grid.Row="1"></local:AsyncConstructor>
+    </Grid>
+
+</Window>
