@@ -27,7 +27,7 @@ namespace AsyncAwaitPain.Lib.Test
         {
             var o = new AsyncConstructorInitialize();
 
-            await o.Initialize();
+            await o.InitializeAsync();
 
             Assert.IsTrue(o.Completed);
 

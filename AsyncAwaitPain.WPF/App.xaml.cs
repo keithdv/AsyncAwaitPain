@@ -15,11 +15,13 @@ namespace AsyncAwaitPain.WPF
     public partial class App : Application
     {
 
-
+#if DEBUG
+        // THIS IS NOT A CURE!!!
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             //MessageBox.Show($"TaskScheduler.UnobservedTaskException event hit [{e.Exception.Flatten().ToString()}]");
         }
+#endif
 
         private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {

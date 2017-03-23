@@ -15,6 +15,13 @@ namespace AsyncAwaitPain.WebApi.Controllers
     {
         private string delayFinished;
 
+        public async Task Delay()
+        {
+            delayFinished = "Failure";
+            await Task.Delay(50);
+            delayFinished = "Completed successfully";
+        }
+
         [Route("Abandon")]
         [HttpGet]
         public IHttpActionResult Get()
@@ -25,8 +32,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
             return Ok(delayFinished);
         }
 
-
-
+        
         [Route("Async")]
         [HttpGet]
         public async Task<IHttpActionResult> GetAsync()
@@ -43,31 +49,14 @@ namespace AsyncAwaitPain.WebApi.Controllers
         public IHttpActionResult Wait()
         {
 
-            if (!Delay().Wait(100))
+            if (!Delay().Wait(25)) // Use Constants
             {
-                delayFinished = "Blocked";
+                delayFinished = "Deadlock"; // Deadlock - both threads trying to access the same ExecutionContext
             }
 
             return Ok(delayFinished);
         }
 
-        [HttpGet]
-        [Route("GetAwaiter")]
-        public IHttpActionResult GetAwaiter()
-        {
-
-            Delay().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            return Ok(delayFinished);
-
-        }
-
-        public async Task Delay()
-        {
-            delayFinished = "Failure";
-            await Task.Delay(50);
-            delayFinished = "Completed successfully";
-        }
 
     }
 }

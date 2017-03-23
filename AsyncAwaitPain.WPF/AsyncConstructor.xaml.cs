@@ -60,7 +60,7 @@ namespace AsyncAwaitPain.WPF
 
             oAsyncConstructor = o;
 
-            await o.Initialize();
+            await o.InitializeAsync();
 
         }
 

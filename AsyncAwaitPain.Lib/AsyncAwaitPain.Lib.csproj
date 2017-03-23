@@ -44,6 +44,9 @@
     <Compile Include="AsyncConstructor.cs" />
     <Compile Include="AsyncConstructorInitializeException.cs" />
     <Compile Include="AsyncConstructorInitialize.cs" />
+    <Compile Include="AsyncEventTaskCompletionSource.cs" />
+    <Compile Include="AsyncEventTaskQueue.cs" />
+    <Compile Include="AsyncEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

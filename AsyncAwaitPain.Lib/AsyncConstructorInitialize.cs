@@ -12,7 +12,7 @@ namespace AsyncAwaitPain.Lib
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public async Task Initialize()
+        public async Task InitializeAsync() // IInitialize interface
         {
             await Task.Delay(5);
             Message = "Completed";

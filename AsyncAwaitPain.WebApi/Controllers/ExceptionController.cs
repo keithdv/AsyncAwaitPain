@@ -55,6 +55,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
         {
             await Task.Delay(50).ConfigureAwait(false);
             throw new Exception("Failure");
+
         }
 
         [HttpGet]

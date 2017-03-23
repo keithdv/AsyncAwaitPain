@@ -20,34 +20,58 @@ namespace AsyncAwaitPain.WebApi.Controllers
         public async Task Delay()
         {
             delayFinished = "Failure";
+            await Task.Delay(5);
+            delayFinished = "Completed successfully";
+        }
+
+        [HttpGet]
+        [Route("Abandon")]
+        public IHttpActionResult Abandon()
+        {
+
+            Delay().ConfigureAwait(false);
+
+
+            return Ok(delayFinished);
+
+        }
+
+        [HttpGet]
+        [Route("Deadlock")]
+        public IHttpActionResult Deadlock()
+        {
+
+            Delay().ConfigureAwait(false).GetAwaiter().GetResult();
+
+
+            return Ok(delayFinished);
+
+        }
+
+
+        public async Task DelayConfigureAwaitFalse()
+        {
+            delayFinished = "Failure";
             await Task.Delay(5).ConfigureAwait(false);
             delayFinished = "Completed successfully";
         }
 
+
+ 
         [HttpGet]
         [Route("Wait")]
         public IHttpActionResult Wait()
         {
 
-            if (!Delay().Wait(50))
+            if (!DelayConfigureAwaitFalse().Wait(50))
             {
-                delayFinished = "Blocked";
+                delayFinished = "Deadlock";
             }
 
             return Ok(delayFinished);
 
         }
 
-        [HttpGet]
-        [Route("GetAwaiter")]
-        public IHttpActionResult GetAwaiter()
-        {
-
-            Delay().GetAwaiter().GetResult();
-
-            return Ok(delayFinished);
-
-        }
 
         public async Task DelayNestedA()
         {
@@ -68,7 +92,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
             if (!DelayNestedA().Wait(500))
             {
-                delayFinished = "Blocked";
+                delayFinished = "Deadlock";
             }
 
             return Ok(delayFinished);
