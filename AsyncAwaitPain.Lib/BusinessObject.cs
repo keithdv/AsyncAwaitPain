@@ -7,27 +7,30 @@ using System.Threading.Tasks;
 
 namespace AsyncAwaitPain.Lib
 {
-    public class AsyncEvent
+    public class BusinessObject
     {
 
-        public AsyncEvent()
+        public BusinessObject()
         {
             Collection.CollectionChanged += Collection_CollectionChanged;
         }
 
         private async void Collection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            await Task.Delay(5);
+            await Task.Delay(1000);
+            CompletedCount += 1;
         }
 
-        private ObservableCollection<string> Collection { get; set; } = new ObservableCollection<string>();
+        private AsyncObservableCollection<string> Collection { get; set; } = new AsyncObservableCollection<string>();
 
         public void Operation()
         {
             Collection.Add("value");
         }
 
-        public bool Completed { get; private set; } = false;
+        private static object _lock = new object();
+
+        public int CompletedCount { get; private set; } = 0;
 
     }
 }

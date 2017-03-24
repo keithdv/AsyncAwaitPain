@@ -41,7 +41,7 @@ namespace AsyncAwaitPain.WPF
 
         private void Go_Click(object sender, RoutedEventArgs e)
         {
-            var asyncEvent = new Lib.AsyncEvent();
+            var asyncEvent = new Lib.BusinessObject();
 
             asyncEvent.Operation();
 
