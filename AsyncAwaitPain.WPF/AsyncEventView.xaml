@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="AsyncAwaitPain.WPF.AsyncEventView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AsyncAwaitPain.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="ucAsyncEvent">
+    <StackPanel>
+        <TextBlock>Async Event</TextBlock>
+        <TextBlock>
+            <Run>Sync Count:</Run>
+            <Run Text="{Binding Path=BusinessObject.CompletedCount, ElementName=ucAsyncEvent, Mode=OneWay}"></Run>
+        </TextBlock>
+        <TextBlock>
+            <Run>Async Count:</Run>
+            <Run Text="{Binding Path=BusinessObjectAsync.CompletedCount, ElementName=ucAsyncEvent, Mode=OneWay}"></Run>
+        </TextBlock>
+        <Button x:Name="SyncOperation" Click="SyncOperation_Click">Sync Operation</Button>
+        <Button x:Name="AsyncOperation" Click="AsyncOperation_Click">Async Operation</Button>
+        <Button x:Name="SyncOperationException" Click="SyncOperationException_Click">Sync Operation Exception</Button>
+    </StackPanel>
+</UserControl>

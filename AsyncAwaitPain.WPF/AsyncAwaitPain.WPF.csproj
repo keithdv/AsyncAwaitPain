@@ -55,11 +55,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="AsyncConstructor.xaml">
+    <Page Include="AsyncConstructorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AsyncEvent.xaml">
+    <Page Include="AsyncEventView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -79,11 +79,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AsyncConstructor.xaml.cs">
-      <DependentUpon>AsyncConstructor.xaml</DependentUpon>
+    <Compile Include="AsyncConstructorView.xaml.cs">
+      <DependentUpon>AsyncConstructorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AsyncEvent.xaml.cs">
-      <DependentUpon>AsyncEvent.xaml</DependentUpon>
+    <Compile Include="AsyncEventView.xaml.cs">
+      <DependentUpon>AsyncEventView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConfigureAwait.xaml.cs">
       <DependentUpon>ConfigureAwait.xaml</DependentUpon>

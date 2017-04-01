@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AsyncAwaitPain.Lib
+namespace AsyncAwaitPain.Lib.AsyncEvent
 {
     public delegate Task NotifyCollectionChangedAsyncEventHandler(object sender, NotifyCollectionChangedEventArgs e);
 
@@ -22,15 +22,17 @@ namespace AsyncAwaitPain.Lib
         public AsyncObservableCollection(List<T> list) : base(list) { }
 
 
-        //public async Task AddAsync(T item)
-        //{
-        //    base.Add(item);
-        //    await _collectionChangedTask;
-        //}
-
-        //private static object _lock = new object();
-
-        //public async Task AddAsync(T item)
+        public Task SimpleAddAsync(T item)
+        {
+            base.Add(item);
+            return _collectionChangedTask;
+        }
+        
+        /// Does not compile
+        /// You cannot have an async within a Lock
+        /// Lock must be release by the owner thread 
+        /// Not guarenteed with Async
+        //public async Task LockAddAsync(T item)
         //{
         //    lock (_lock)
         //    {
@@ -39,22 +41,28 @@ namespace AsyncAwaitPain.Lib
         //    }
         //}
 
-        //private static object _lock = new object();
+        private static object _lock = new object();
 
-        //public async Task AddAsync(T item)
-        //{
-        //    Monitor.Enter(_lock);
-        //    base.Add(item);
-        //    await _collectionChangedTask;
-        //    _collectionChangedTask = null;
-        //    Monitor.Exit(_lock); // Put a break point here...it works! (That's not a good thing)
-        //}
+        // So we bypass lock
+        // And use the underlying type - Monitor
+        // Deadlock or Exception
+        public async Task MonitorAddAsync(T item)
+        {
+            Monitor.Enter(_lock);
+            base.Add(item);
+            await _collectionChangedTask;
+            _collectionChangedTask = null;
+            Monitor.Exit(_lock); // Put a break point here...it works! (That's not a good thing)
+        }
 
         // Ensure only one thread is adding or removing items
         private static AutoResetEvent are = new AutoResetEvent(true);
 
         public async Task AddAsync(T item)
         {
+
+            // Sometimes hard to understand the right combination of tools to use
+
             are.WaitOne(); // Close gate - only allow one thread thru
             base.Add(item);
             await _collectionChangedTask;

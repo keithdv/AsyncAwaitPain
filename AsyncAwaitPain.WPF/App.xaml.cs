@@ -19,7 +19,7 @@ namespace AsyncAwaitPain.WPF
         // THIS IS NOT A CURE!!!
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            //MessageBox.Show($"TaskScheduler.UnobservedTaskException event hit [{e.Exception.Flatten().ToString()}]");
+            MessageBox.Show($"TaskScheduler.UnobservedTaskException event hit [{e.Exception.Flatten().ToString()}]");
         }
 #endif
 
@@ -31,7 +31,7 @@ namespace AsyncAwaitPain.WPF
                 MessageBox.Show($"Dispatcher.UnhandledException event hit [{aggEx.Flatten().ToString()}]");
                 e.Handled = true;
             }
-            else if(e.Exception is Exception)
+            else
             {
                 MessageBox.Show($"Dispatcher.UnhandledException event hit [{e.Exception?.Message}]");
                 e.Handled = true;

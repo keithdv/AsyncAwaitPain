@@ -40,14 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncConstructorException.cs" />
-    <Compile Include="AsyncConstructor.cs" />
-    <Compile Include="AsyncConstructorInitializeException.cs" />
-    <Compile Include="AsyncConstructorInitialize.cs" />
-    <Compile Include="AsyncEventTaskCompletionSource.cs" />
-    <Compile Include="BusinessObjectAsync.cs" />
-    <Compile Include="BusinessObject.cs" />
-    <Compile Include="AsyncObservableCollection.cs" />
+    <Compile Include="AsyncConstructor\AsyncConstructorException.cs" />
+    <Compile Include="AsyncConstructor\AsyncConstructor.cs" />
+    <Compile Include="AsyncConstructor\AsyncConstructorInitializeException.cs" />
+    <Compile Include="AsyncConstructor\AsyncConstructorInitialize.cs" />
+    <Compile Include="AsyncEvent\AsyncEventTaskCompletionSource.cs" />
+    <Compile Include="AsyncEvent\BusinessObjectAsyncException.cs" />
+    <Compile Include="AsyncEvent\BusinessObjectException.cs" />
+    <Compile Include="AsyncEvent\BusinessObjectAsync.cs" />
+    <Compile Include="AsyncEvent\BusinessObject.cs" />
+    <Compile Include="AsyncEvent\AsyncObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

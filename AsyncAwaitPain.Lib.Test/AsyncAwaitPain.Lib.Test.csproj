@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AsyncConstructorTests.cs" />
     <Compile Include="AsyncEventTests.cs" />
+    <Compile Include="AsyncObservableCollectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

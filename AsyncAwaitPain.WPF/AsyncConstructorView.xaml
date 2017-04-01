@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AsyncAwaitPain.WPF.AsyncConstructor"
+﻿<UserControl x:Class="AsyncAwaitPain.WPF.AsyncConstructorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,7 @@
              x:Name="ucAsyncConstructor">
     <StackPanel>
         <TextBlock>Async Constructor</TextBlock>
-        <TextBlock Text="{Binding Path=oAsyncConstructor.Message, ElementName=ucAsyncConstructor, FallbackValue=NaN}"></TextBlock>
+        <TextBlock Text="{Binding Path=AsyncConstructor.Message, ElementName=ucAsyncConstructor, FallbackValue=NaN, Mode=OneWay}"></TextBlock>
         <Button x:Name="New" Click="New_Click">New</Button>
         <Button x:Name="Exception" Click="Exception_Click">Exception</Button>
         <Button x:Name="Initialize" Click="Initialize_Click">Initialize</Button>

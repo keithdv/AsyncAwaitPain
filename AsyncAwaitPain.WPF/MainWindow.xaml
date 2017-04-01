@@ -33,8 +33,8 @@
         </StackPanel>
         <local:Exception Grid.Column="1"></local:Exception>
         <local:ConfigureAwait Grid.Column="2"></local:ConfigureAwait>
-        <local:AsyncConstructor Grid.Row="1"></local:AsyncConstructor>
-        <local:AsyncEvent Grid.Row="1" Grid.Column="1"></local:AsyncEvent>
+        <local:AsyncConstructorView Grid.Row="1"></local:AsyncConstructorView>
+        <local:AsyncEventView Grid.Row="1" Grid.Column="1"></local:AsyncEventView>
     </Grid>
 
 </Window>

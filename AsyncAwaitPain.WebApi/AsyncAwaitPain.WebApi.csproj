@@ -207,6 +207,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AsyncConstructorController.cs" />
+    <Compile Include="Controllers\AsyncEventController.cs" />
     <Compile Include="Controllers\ExceptionController.cs" />
     <Compile Include="Controllers\ConfigureAwaitFalseController.cs" />
     <Compile Include="Controllers\SimpleController.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using AsyncAwaitPain.Lib.Constructor;
 
 namespace AsyncAwaitPain.Lib.Test
 {

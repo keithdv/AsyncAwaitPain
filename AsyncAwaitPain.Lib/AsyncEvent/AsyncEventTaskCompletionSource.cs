@@ -5,32 +5,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AsyncAwaitPain.Lib
+namespace AsyncAwaitPain.Lib.AsyncEvent
 {
-    public class BusinessObject
+    public class AsyncEventTaskCompletionSource
     {
 
-        public BusinessObject()
+
+        public AsyncEventTaskCompletionSource()
         {
             Collection.CollectionChanged += Collection_CollectionChanged;
         }
 
+        TaskCompletionSource<object> tcs;
+
         private async void Collection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             await Task.Delay(1000);
-            CompletedCount += 1;
+            Completed = true;
+            tcs.SetResult(null);
         }
 
         private AsyncObservableCollection<string> Collection { get; set; } = new AsyncObservableCollection<string>();
 
-        public void Operation()
+        public async Task OperationAsync()
         {
+            tcs = new TaskCompletionSource<object>();
             Collection.Add("value");
+            await tcs.Task;
+            
         }
 
-        private static object _lock = new object();
+        public bool Completed { get; private set; } = false;
 
-        public int CompletedCount { get; private set; } = 0;
 
     }
 }

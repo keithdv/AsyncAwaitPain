@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AsyncAwaitPain.Lib
+namespace AsyncAwaitPain.Lib.Constructor
 {
-    public class AsyncConstructorException : INotifyPropertyChanged
+    public class AsyncConstructor : INotifyPropertyChanged
     {
-        public AsyncConstructorException()
+        public AsyncConstructor()
         {
+
+            Completed = false;
 
             Delay().ContinueWith(x =>
             {
@@ -25,8 +27,8 @@ namespace AsyncAwaitPain.Lib
         private async Task Delay()
         {
             await Task.Delay(5);
-            Message = "Exception";
-            throw new Exception("Failure");
+            Message = "Completed";
+            Completed = true;
         }
 
         private string _message = "Started";
@@ -40,6 +42,18 @@ namespace AsyncAwaitPain.Lib
             {
                 _message = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Message)));
+            }
+        }
+
+        private bool _completed;
+
+        public bool Completed
+        {
+            get { return _completed; }
+            set
+            {
+                _completed = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Completed)));
             }
         }
 
