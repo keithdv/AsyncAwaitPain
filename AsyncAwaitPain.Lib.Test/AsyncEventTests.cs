@@ -87,7 +87,7 @@ namespace AsyncAwaitPain.Lib.Test
 
         }
 
-        [Ignore]
+
         [TestMethod]
         public async Task BusinessObject_Simple_MultipleThreads()
         {
@@ -115,15 +115,21 @@ namespace AsyncAwaitPain.Lib.Test
 
             var asyncEvent = new BusinessObjectAsync();
 
-            List<Task> tasks = new List<Task>();
 
-            tasks.Add(Task.Run(() => asyncEvent.OperationAsync()));
-            tasks.Add(Task.Run(() => asyncEvent.OperationAsync()));
-            tasks.Add(Task.Run(() => asyncEvent.OperationAsync()));
+            for (var i = 0; i < 20; i++) {
 
-            await Task.WhenAll(tasks);
+                List<Task> allTasks = new List<Task>();
 
-            Assert.AreEqual(3, asyncEvent.CompletedCount);
+                for (var j = 0; j < 20; j++)
+                {
+                    allTasks.Add(Task.Run(() => asyncEvent.OperationAsync()));
+                }
+
+                await Task.WhenAll(allTasks);
+
+            }
+
+            Assert.AreEqual(400, asyncEvent.CompletedCount);
 
         }
 

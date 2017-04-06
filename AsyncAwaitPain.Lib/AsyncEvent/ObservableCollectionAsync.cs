@@ -20,6 +20,14 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
 
         public ObservableCollectionAsync(List<T> list) : base(list) { }
 
+        private Task _collectionChangedTask;
+
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            base.OnCollectionChanged(e);
+            _collectionChangedTask = CollectionChangedAsync?.Invoke(this, e);
+
+        }
 
         public Task SimpleAddAsync(T item)
         {
@@ -57,7 +65,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
         // Ensure only one thread is adding or removing items
         private static AutoResetEvent are = new AutoResetEvent(true);
 
-        public async Task AddAsync(T item)
+        public Task AddAsync(T item)
         {
 
             // Sometimes hard to understand the right combination of tools to use
@@ -66,23 +74,17 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
             {
                 are.WaitOne(); // Close gate - only allow one thread thru
                 base.Add(item);
-                await _collectionChangedTask;
-                _collectionChangedTask = null;
-
+                var t = _collectionChangedTask;
+                are.Set();
+                return t;
             }
-            finally
+            catch(Exception)
             {
                 are.Set(); // Open gate - Gate can be opened by any thread
+                throw;
             }
         }
 
-        private Task _collectionChangedTask;
 
-        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
-            base.OnCollectionChanged(e);
-            _collectionChangedTask = CollectionChangedAsync?.Invoke(this, e);
-
-        }
     }
 }

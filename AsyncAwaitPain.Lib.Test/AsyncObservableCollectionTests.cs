@@ -60,6 +60,10 @@ namespace AsyncAwaitPain.Lib.Test
         [TestMethod]
         public async Task MonitorAdd_MultipleThreads()
         {
+
+            // Good advice - Run without the debugger!!
+            // Blocks or failes
+            // Can succeed with the debugger and breakpoints in the "right" spots
             var completedCount = 0;
             var collection = new ObservableCollectionAsync<string>();
 
