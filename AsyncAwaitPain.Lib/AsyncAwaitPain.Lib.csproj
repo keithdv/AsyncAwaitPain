@@ -45,11 +45,16 @@
     <Compile Include="AsyncConstructor\AsyncConstructorInitializeException.cs" />
     <Compile Include="AsyncConstructor\AsyncConstructorInitialize.cs" />
     <Compile Include="AsyncEvent\AsyncEventTaskCompletionSource.cs" />
+    <Compile Include="AsyncEvent\BusinessObjectAsync.cs" />
     <Compile Include="AsyncEvent\BusinessObjectAsyncException.cs" />
     <Compile Include="AsyncEvent\BusinessObjectException.cs" />
-    <Compile Include="AsyncEvent\BusinessObjectAsync.cs" />
+    <Compile Include="AsyncEvent\INotifyCollectionChangedAsync.cs" />
+    <Compile Include="AsyncEvent\IObservableCollectionAsync.cs" />
+    <Compile Include="AsyncUnitTest\BusinessObjectAsync.cs" />
     <Compile Include="AsyncEvent\BusinessObject.cs" />
-    <Compile Include="AsyncEvent\AsyncObservableCollection.cs" />
+    <Compile Include="AsyncEvent\ObservableCollectionAsync.cs" />
+    <Compile Include="AsyncUnitTest\IObservableCollectionAsync.cs" />
+    <Compile Include="AsyncUnitTest\INotifyCollectionChangedAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

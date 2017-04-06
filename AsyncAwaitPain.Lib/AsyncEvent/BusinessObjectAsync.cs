@@ -12,7 +12,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
 
         public BusinessObjectAsync()
         {
-            Collection = new AsyncObservableCollection<string>();
+            this.Collection = new ObservableCollectionAsync<string>();
             Collection.CollectionChangedAsync += Collection_CollectionChangedAsync;
         }
 
@@ -22,7 +22,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
             CompletedCount += 1;
         }
 
-        private AsyncObservableCollection<string> Collection { get; set; }
+        private IObservableCollectionAsync<string> Collection { get; set; }
 
         public Task OperationAsync()
         {

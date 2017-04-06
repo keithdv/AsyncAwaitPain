@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AsyncAwaitPain.Lib.AsyncEvent
+namespace AsyncAwaitPain.Lib.AsyncUnitTest
 {
-    public class BusinessObjectAsyncException : INotifyPropertyChanged
+    public class BusinessObjectAsync : INotifyPropertyChanged
     {
 
-        public BusinessObjectAsyncException()
+        public BusinessObjectAsync(IObservableCollectionAsync<string> collection)
         {
-            Collection = new ObservableCollectionAsync<string>();
+            this.Collection = collection;
             Collection.CollectionChangedAsync += Collection_CollectionChangedAsync;
         }
 
@@ -20,14 +20,13 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
         {
             await Task.Delay(1000);
             CompletedCount += 1;
-            throw new Exception("Failure");
         }
 
-        private ObservableCollectionAsync<string> Collection { get; set; }
+        private IObservableCollectionAsync<string> Collection { get; set; }
 
-        public async Task OperationAsync()
+        public Task OperationAsync()
         {
-            await Collection.AddAsync("value");
+            return Collection.AddAsync("value");
         }
 
         private int _CompletedCount;

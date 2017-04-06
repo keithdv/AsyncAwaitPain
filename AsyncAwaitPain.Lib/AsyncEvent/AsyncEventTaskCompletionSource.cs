@@ -25,7 +25,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
             tcs.SetResult(null);
         }
 
-        private AsyncObservableCollection<string> Collection { get; set; } = new AsyncObservableCollection<string>();
+        private ObservableCollectionAsync<string> Collection { get; set; } = new ObservableCollectionAsync<string>();
 
         public async Task OperationAsync()
         {

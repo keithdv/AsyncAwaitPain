@@ -16,6 +16,9 @@ namespace AsyncAwaitPain.Lib.Test
         [TestMethod]
         public void SyncOperation()
         {
+            // Fails
+            // The unit test finishes before the delay
+
             var bo = new BusinessObject();
 
             bo.Operation();
@@ -29,6 +32,9 @@ namespace AsyncAwaitPain.Lib.Test
         [TestMethod]
         public void SyncOperationException()
         {
+            //Fails
+            // The exception in the event handler is never caught
+
             var bo = new BusinessObjectException();
 
             Exception ex = null;
@@ -81,6 +87,7 @@ namespace AsyncAwaitPain.Lib.Test
 
         }
 
+        [Ignore]
         [TestMethod]
         public async Task BusinessObject_Simple_MultipleThreads()
         {
@@ -122,6 +129,7 @@ namespace AsyncAwaitPain.Lib.Test
 
         private static object _lock = new object();
 
+        [Ignore]
         [TestMethod]
         public async Task Monitor_Enter_Exit()
         {
@@ -130,6 +138,7 @@ namespace AsyncAwaitPain.Lib.Test
             Monitor.Exit(_lock);
         }
 
+        [Ignore]
         [TestMethod]
         public async Task TaskCompletionSource()
         {

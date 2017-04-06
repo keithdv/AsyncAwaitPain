@@ -19,7 +19,7 @@ namespace AsyncAwaitPain.Lib.Test
         public async Task SimpleAdd()
         {
             var completedCount = 0;
-            var collection = new AsyncObservableCollection<string>();
+            var collection = new ObservableCollectionAsync<string>();
 
             collection.CollectionChangedAsync += async (o, e) =>
             {
@@ -36,7 +36,7 @@ namespace AsyncAwaitPain.Lib.Test
         public async Task SimpleAdd_MultipleThreads()
         {
             var completedCount = 0;
-            var collection = new AsyncObservableCollection<string>();
+            var collection = new ObservableCollectionAsync<string>();
 
             collection.CollectionChangedAsync += async (o, e) =>
             {
@@ -61,7 +61,7 @@ namespace AsyncAwaitPain.Lib.Test
         public async Task MonitorAdd_MultipleThreads()
         {
             var completedCount = 0;
-            var collection = new AsyncObservableCollection<string>();
+            var collection = new ObservableCollectionAsync<string>();
 
             collection.CollectionChangedAsync += async (o, e) =>
             {
@@ -99,7 +99,7 @@ namespace AsyncAwaitPain.Lib.Test
         public async Task AutoResetEvent_MultipleThreads()
         {
             var completedCount = 0;
-            var collection = new AsyncObservableCollection<string>();
+            var collection = new ObservableCollectionAsync<string>();
 
             collection.CollectionChangedAsync += async (o, e) =>
             {

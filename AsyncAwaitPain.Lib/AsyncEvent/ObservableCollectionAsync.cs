@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 
 namespace AsyncAwaitPain.Lib.AsyncEvent
 {
-    public delegate Task NotifyCollectionChangedAsyncEventHandler(object sender, NotifyCollectionChangedEventArgs e);
 
-    public class AsyncObservableCollection<T> : ObservableCollection<T>
+    public class ObservableCollectionAsync<T> : ObservableCollection<T>, IObservableCollectionAsync<T>
     {
 
         public event NotifyCollectionChangedAsyncEventHandler CollectionChangedAsync;
-        public AsyncObservableCollection() : base() { }
+        public ObservableCollectionAsync() : base() { }
 
-        public AsyncObservableCollection(IEnumerable<T> enumberable) : base(enumberable) { }
+        public ObservableCollectionAsync(IEnumerable<T> enumberable) : base(enumberable) { }
 
-        public AsyncObservableCollection(List<T> list) : base(list) { }
+        public ObservableCollectionAsync(List<T> list) : base(list) { }
 
 
         public Task SimpleAddAsync(T item)
@@ -27,7 +26,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
             base.Add(item);
             return _collectionChangedTask;
         }
-        
+
         /// Does not compile
         /// You cannot have an async within a Lock
         /// Lock must be release by the owner thread 
@@ -63,11 +62,18 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
 
             // Sometimes hard to understand the right combination of tools to use
 
-            are.WaitOne(); // Close gate - only allow one thread thru
-            base.Add(item);
-            await _collectionChangedTask;
-            _collectionChangedTask = null;
-            are.Set(); // Open gate - Gate can be opened by any thread
+            try
+            {
+                are.WaitOne(); // Close gate - only allow one thread thru
+                base.Add(item);
+                await _collectionChangedTask;
+                _collectionChangedTask = null;
+
+            }
+            finally
+            {
+                are.Set(); // Open gate - Gate can be opened by any thread
+            }
         }
 
         private Task _collectionChangedTask;
