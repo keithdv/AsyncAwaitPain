@@ -8,10 +8,9 @@
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="ucConfigureAwait">
     <StackPanel>
-        <TextBlock>ConfigureAwait(false)</TextBlock>
-        <TextBlock Text="{Binding Path=DelayCount, ElementName=ucConfigureAwait, FallbackValue=NaN}"></TextBlock>
-        <TextBlock Text="{Binding Path=MethodCount, ElementName=ucConfigureAwait, FallbackValue=NaN}"></TextBlock>
-        <Button x:Name="ConfigureAwaitFalse" Click="ConfigureAwaitFalse_Click">Abandon</Button>
+        <TextBlock>ConfigureAwait</TextBlock>
+        <TextBlock Text="{Binding Path=ClickCount, ElementName=ucConfigureAwait, FallbackValue=NaN}"></TextBlock>
         <Button x:Name="Wait" Click="Wait_Click">Wait</Button>
+        <Button x:Name="Nested" Click="NestedConfigureAwait_Click">Nested ConfigureAwait</Button>
     </StackPanel>
 </UserControl>

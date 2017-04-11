@@ -25,44 +25,55 @@ namespace AsyncAwaitPain.WPF
             InitializeComponent();
         }
 
-        public int DelayCount
+
+        public int ClickCount
         {
-            get { return (int)GetValue(DelayCountProperty); }
-            set { SetValue(DelayCountProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for DelayCount.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DelayCountProperty =
-            DependencyProperty.Register("DelayCount", typeof(int), typeof(ConfigureAwait), new PropertyMetadata(0));
-
-
-        public int MethodCount
-        {
-            get { return (int)GetValue(MethodCountProperty); }
-            set { SetValue(MethodCountProperty, value); }
+            get { return (int)GetValue(ClickCountProperty); }
+            set { SetValue(ClickCountProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Count.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MethodCountProperty =
-            DependencyProperty.Register("MethodCount", typeof(int), typeof(ConfigureAwait), new PropertyMetadata(0));
+        public static readonly DependencyProperty ClickCountProperty =
+            DependencyProperty.Register("ClickCount", typeof(int), typeof(ConfigureAwait), new PropertyMetadata(0));
 
 
-        private async Task Delay()
+        private async Task DelayConfigureAwaitFalse()
         {
             await Task.Delay(50).ConfigureAwait(false);
-            DelayCount += 1;
+            ClickCount += 1;
         }
 
-        private void ConfigureAwaitFalse_Click(object sender, RoutedEventArgs e)
-        {
-            Delay();
-            MethodCount += 1;
-        }
 
         private void Wait_Click(object sender, RoutedEventArgs e)
         {
-            Delay().Wait();
-            MethodCount += 1;
+            // This will cause an error when DelayCount is used
+            // because this is bound to 
+            // which will try to access the control
+            // but not on the UI context
+            if (!DelayConfigureAwaitFalse().Wait(TimeConstants._5seconds))
+            {
+                MessageBox.Show("Deadlock!");
+            }
+        }
+
+        private async Task DelayConfigureAwaitFalseNestedA()
+        {
+            await DelayConfigureAwaitFalseNestedB(); // We're making the decision to continue on the UI context
+            ClickCount += 1;
+        }
+
+        private async Task DelayConfigureAwaitFalseNestedB()
+        {
+            await Task.Delay(TimeConstants._1second).ConfigureAwait(false);
+            // ConfigureAwait(False) so we're in a new context
+            // Doesn't matter we're not updated any UI controls here
+
+            // This allows shared (ASP, Xaml) libraries can have ConfigureAwait(false);
+        }
+
+        private async void NestedConfigureAwait_Click(object sender, RoutedEventArgs e)
+        {
+            await DelayConfigureAwaitFalseNestedA();
         }
     }
 }

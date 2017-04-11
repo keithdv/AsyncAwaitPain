@@ -16,17 +16,18 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
         private string delayFinished = "Failure";
 
+        public async Task DelayThrowException()
+        {
+            await Task.Delay(TimeConstants._25milliseconds).ConfigureAwait(false);
+            throw new Exception("Failure");
+        }
+
         [HttpGet]
         [Route("AsyncTask")]
-        public async Task<IHttpActionResult> AsyncTaskThrowException()
+        public async Task<IHttpActionResult> AsyncTask()
         {
-            try
-            {
-                await DelayConfigureAwaitFalse();
-            } catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            // Works perfectly
+            await DelayThrowException();
 
             return Ok("Success");
         }
@@ -36,45 +37,42 @@ namespace AsyncAwaitPain.WebApi.Controllers
         [Route("Wait")]
         public IHttpActionResult Wait()
         {
-            try
+            // Works perfectly
+            if (!DelayThrowException().Wait(TimeConstants._500milliseconds))
             {
-                if (!DelayConfigureAwaitFalse().Wait(100))
-                {
-                    delayFinished = "Blocked";
-                }
-            } catch(Exception ex)
-            {
-                return InternalServerError(ex);
+                delayFinished = "Blocked";
             }
 
             return Ok(delayFinished);
 
         }
 
-        public async Task DelayConfigureAwaitFalse()
-        {
-            await Task.Delay(50).ConfigureAwait(false);
-            throw new Exception("Failure");
 
-        }
 
         [HttpGet]
         [Route("Abandon")]
         public IHttpActionResult Abandon()
         {
-            try
-            {
-                DelayConfigureAwaitFalse();
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+            // No exception show?!
+            DelayThrowException();
+
+            // Where did it go?
+            // Put a breakpoint in Global.Asax.cs=>TaskScheduler_UnobservedTaskException
+            // And call GarbageCollector.Collect
+            // to see!!
 
             return Ok("Success (?)");
+
         }
 
+        [HttpGet]
+        [Route("AsyncVoid")]
+        public async void AsyncVoid()
+        {
 
+            await DelayThrowException();
+
+        }
 
     }
 }

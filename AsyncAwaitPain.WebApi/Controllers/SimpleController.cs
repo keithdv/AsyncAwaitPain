@@ -44,18 +44,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
         }
 
-        [HttpGet]
-        [Route("Wait")]
-        public IHttpActionResult Wait()
-        {
 
-            if (!Delay().Wait(25)) // Use Constants
-            {
-                delayFinished = "Deadlock"; // Deadlock - both threads trying to access the same ExecutionContext
-            }
-
-            return Ok(delayFinished);
-        }
 
 
     }

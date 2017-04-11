@@ -13,7 +13,8 @@ namespace AsyncAwaitPain.WebApi.Controllers
     {
 
         [HttpGet]
-        public void Get()
+        [Route("Collect")]
+        public void Collect()
         {
             GC.Collect();
         }

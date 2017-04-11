@@ -18,15 +18,25 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
 
         private async Task Collection_CollectionChangedAsync(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            await Task.Delay(1000);
-            CompletedCount += 1;
+            await Task.Delay(10);
+            lock (_lock)
+            {
+                CompletedCount += 1;
+            }
         }
+
+        private static object _lock = new object();
 
         private IObservableCollectionAsync<string> Collection { get; set; }
 
         public Task OperationAsync()
         {
             return Collection.AddAsync("value");
+        }
+
+        public Task OperationAsyncEx()
+        {
+            return Collection.AddAsyncEx("Value");
         }
 
         public Task OperationSimpleAsync()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nito.AsyncEx;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -68,23 +69,58 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
         public Task AddAsync(T item)
         {
 
-            // Sometimes hard to understand the right combination of tools to use
+            // Since there is only one instance of _collectionChangeTask
+            // available we have to be careful not to overwrite it during multithreaded operations
+            // But you cannot use Monitor.Enter and Monitor.Exit within an asyncrnous block of code
+
+            are.WaitOne(); // Close gate - only allow one thread thru
+
+            Task t = null;
 
             try
             {
-                are.WaitOne(); // Close gate - only allow one thread thru
                 base.Add(item);
-                var t = _collectionChangedTask;
-                are.Set();
-                return t;
+                t = _collectionChangedTask;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 are.Set(); // Open gate - Gate can be opened by any thread
                 throw;
             }
+
+            are.Set(); // Open gate - Gate can be opened by any thread
+            return t;
+
         }
 
+        private static AsyncAutoResetEvent areAsync = new AsyncAutoResetEvent(true);
+
+        public async Task AddAsyncEx(T item)
+        {
+
+            // Since there is only one instance of _collectionChangeTask
+            // available we have to be careful not to overwrite it during multithreaded operations
+            // But you cannot use Monitor.Enter and Monitor.Exit within an asyncrnous block of code
+
+            await areAsync.WaitAsync(); // Close gate - only allow one thread thru
+
+            Task t = null;
+
+            try
+            {
+                base.Add(item);
+                t = _collectionChangedTask;
+            }
+            catch (Exception)
+            {
+                areAsync.Set(); // Open gate - Gate can be opened by any thread
+                throw;
+            }
+
+            areAsync.Set(); // Open gate - Gate can be opened by any thread
+            await t;
+
+        }
 
     }
 }

@@ -25,39 +25,39 @@ namespace AsyncAwaitPain.WPF
             InitializeComponent();
         }
 
-        public int DelayCount
+        public int Count
         {
             get { return (int)GetValue(DelayCountProperty); }
             set { SetValue(DelayCountProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for DelayCount.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DelayCountProperty =
-            DependencyProperty.Register("DelayCount", typeof(int), typeof(Exception), new PropertyMetadata(0));
-
-
-        public int MethodCount
-        {
-            get { return (int)GetValue(MethodCountProperty); }
-            set { SetValue(MethodCountProperty, value); }
-        }
-
         // Using a DependencyProperty as the backing store for Count.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MethodCountProperty =
-            DependencyProperty.Register("MethodCount", typeof(int), typeof(Exception), new PropertyMetadata(0));
+        public static readonly DependencyProperty DelayCountProperty =
+            DependencyProperty.Register("Count", typeof(int), typeof(Exception), new PropertyMetadata(0));
 
+        
 
         private async Task Delay()
         {
             await Task.Delay(50);
-            DelayCount += 1;
+            Count += 1;
             throw new System.Exception();
         }
 
         private void Abandon_Click(object sender, RoutedEventArgs e)
         {
             Delay();
-            MethodCount += 1;
+
+            // Everything appears to complete because the exception is after the Count is updated
+            // So where did the exception go?
+            // TaskScheduler.UnobservedTaskException in App.xaml.cs
+        }
+
+        private async void AsyncVoid_Click(object sender, RoutedEventArgs e)
+        {
+            // Works!
+            // Avoid Async Void!! This is the exception!
+            await Delay();
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -91,21 +92,28 @@ namespace AsyncAwaitPain.Lib.Test
         [TestMethod]
         public async Task BusinessObject_Simple_MultipleThreads()
         {
-            // Sometimes fails...sometimes doesn't
-            // Thought this fails because of the single instance of the task
-            // Now I'm not so sure...
 
             var asyncEvent = new BusinessObjectAsync();
 
-            List<Task> tasks = new List<Task>();
+            var allTasks = new List<Task>();
 
-            tasks.Add(Task.Run(() => asyncEvent.OperationSimpleAsync()));
-            tasks.Add(Task.Run(() => asyncEvent.OperationSimpleAsync()));
-            tasks.Add(Task.Run(() => asyncEvent.OperationSimpleAsync()));
+            for (var i = 0; i < 20; i++)
+            {
 
-            await Task.WhenAll(tasks);
+                List<Task> tasks = new List<Task>();
 
-            Assert.AreEqual(3, asyncEvent.CompletedCount);
+                for (var j = 0; j < 20; j++)
+                {
+                    tasks.Add(Task.Run(async () => await asyncEvent.OperationSimpleAsync()));
+                }
+                allTasks.AddRange(tasks);
+
+                await Task.WhenAll(tasks);
+
+            }
+
+
+            Assert.AreEqual(400, asyncEvent.CompletedCount);
 
         }
 
@@ -115,21 +123,42 @@ namespace AsyncAwaitPain.Lib.Test
 
             var asyncEvent = new BusinessObjectAsync();
 
+            var allTasks = new List<Task>();
 
-            for (var i = 0; i < 20; i++) {
+            var maxThreadCount = 0;
 
-                List<Task> allTasks = new List<Task>();
+            var cancel = false;
+            var task = Task.Run(async () =>
+            {
+                if (Process.GetCurrentProcess().Threads.Count > maxThreadCount)
+                {
+                    maxThreadCount = Process.GetCurrentProcess().Threads.Count;
+                }
+                await Task.Delay(50);
+                if (cancel) { return; }
+            });
+
+            for (var i = 0; i < 20; i++)
+            {
+
+                List<Task> tasks = new List<Task>();
 
                 for (var j = 0; j < 20; j++)
                 {
-                    allTasks.Add(Task.Run(() => asyncEvent.OperationAsync()));
+                    tasks.Add(Task.Run(async () => await asyncEvent.OperationAsyncEx()));
+                    await Task.Delay(15);
                 }
+                allTasks.AddRange(tasks);
 
-                await Task.WhenAll(allTasks);
+                await Task.WhenAll(tasks);
 
             }
 
+
             Assert.AreEqual(400, asyncEvent.CompletedCount);
+
+            cancel = true;
+            await task;
 
         }
 

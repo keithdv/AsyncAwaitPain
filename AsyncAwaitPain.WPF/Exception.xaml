@@ -9,8 +9,8 @@
              x:Name="ucException">
     <StackPanel>
         <TextBlock Text="Throw Exception"></TextBlock>
-        <TextBlock Text="{Binding Path=DelayCount, ElementName=ucException, FallbackValue=NaN}"></TextBlock>
-        <TextBlock Text="{Binding Path=MethodCount, ElementName=ucException, FallbackValue=NaN}"></TextBlock>
+        <TextBlock Text="{Binding Path=Count, ElementName=ucException, FallbackValue=NaN}"></TextBlock>
         <Button x:Name="Abandon" Click="Abandon_Click">Abandon</Button>
+        <Button x:Name="AsyncVoid" Click="AsyncVoid_Click">Async Void</Button>
     </StackPanel>
 </UserControl>
