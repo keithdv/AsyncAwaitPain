@@ -145,7 +145,7 @@ namespace AsyncAwaitPain.Lib.Test
 
                 for (var j = 0; j < 20; j++)
                 {
-                    tasks.Add(Task.Run(async () => await asyncEvent.OperationAsyncEx()));
+                    tasks.Add(Task.Run(async () => await asyncEvent.OperationAsync()));
                     await Task.Delay(15);
                 }
                 allTasks.AddRange(tasks);

@@ -34,11 +34,6 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
             return Collection.AddAsync("value");
         }
 
-        public Task OperationAsyncEx()
-        {
-            return Collection.AddAsyncEx("Value");
-        }
-
         public Task OperationSimpleAsync()
         {
             return Collection.SimpleAddAsync("value");

@@ -18,7 +18,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
         public async Task DelayThrowException()
         {
-            await Task.Delay(TimeConstants._25milliseconds).ConfigureAwait(false);
+            await Task.Delay(TimeConstants._25milliseconds).ConfigureAwait(false); // ConfigureAwaitFalse - Won't block
             throw new Exception("Failure");
         }
 
@@ -32,12 +32,58 @@ namespace AsyncAwaitPain.WebApi.Controllers
             return Ok("Success");
         }
 
+        [HttpGet]
+        [Route("AsyncTaskTryCatch")]
+        public async Task<IHttpActionResult> AsyncTaskTryCatch()
+        {
+            // Works perfectly
+
+            try
+            {
+                await DelayThrowException();
+            }
+            catch (Exception)
+            {
+                return Ok("Caught");
+            }
+
+            return Ok("Success");
+        }
+
+        [HttpGet]
+        [Route("Abandon")]
+        public IHttpActionResult Abandon()
+        {
+            DelayThrowException();
+
+            // False positive and the exception is lost 
+            return Ok("Success!???");
+
+        }
+
+
+        [HttpGet]
+        [Route("AbandonTryCatch")]
+        public IHttpActionResult AbandonTryCatch()
+        {
+            try
+            {
+                DelayThrowException();
+            }
+            catch (Exception)
+            {
+                return Ok("Sucess: Caught");
+            }
+
+            // Exception is not caught
+            return Ok("Failure: Not caught");
+        }
 
         [HttpGet]
         [Route("Wait")]
         public IHttpActionResult Wait()
         {
-            // Works perfectly
+            // Works because of ConfigureAwait(false)
             if (!DelayThrowException().Wait(TimeConstants._500milliseconds))
             {
                 delayFinished = "Blocked";
@@ -47,21 +93,26 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
         }
 
-
-
         [HttpGet]
-        [Route("Abandon")]
-        public IHttpActionResult Abandon()
+        [Route("WaitTryCatch")]
+        public IHttpActionResult WaitTryCatch()
         {
-            // No exception show?!
-            DelayThrowException();
+            // Works because of ConfigureAwait(false)
 
-            // Where did it go?
-            // Put a breakpoint in Global.Asax.cs=>TaskScheduler_UnobservedTaskException
-            // And call GarbageCollector.Collect
-            // to see!!
+            try
+            {
+                if (!DelayThrowException().Wait(TimeConstants._500milliseconds))
+                {
+                    delayFinished = "Blocked";
+                }
+            }
+            catch (Exception)
+            {
+                return Ok("Sucess: Caught");
+            }
 
-            return Ok("Success (?)");
+
+            return Ok("Failure: Not Caught");
 
         }
 
@@ -69,10 +120,10 @@ namespace AsyncAwaitPain.WebApi.Controllers
         [Route("AsyncVoid")]
         public async void AsyncVoid()
         {
-
             await DelayThrowException();
-
         }
+
+
 
     }
 }

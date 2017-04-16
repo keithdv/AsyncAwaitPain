@@ -18,9 +18,9 @@ namespace AsyncAwaitPain.WPF
     /// <summary>
     /// Interaction logic for Exception.xaml
     /// </summary>
-    public partial class Exception : UserControl
+    public partial class ExceptionView : UserControl
     {
-        public Exception()
+        public ExceptionView()
         {
             InitializeComponent();
         }
@@ -33,9 +33,9 @@ namespace AsyncAwaitPain.WPF
 
         // Using a DependencyProperty as the backing store for Count.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DelayCountProperty =
-            DependencyProperty.Register("Count", typeof(int), typeof(Exception), new PropertyMetadata(0));
+            DependencyProperty.Register("Count", typeof(int), typeof(ExceptionView), new PropertyMetadata(0));
 
-        
+
 
         private async Task Delay()
         {
@@ -56,8 +56,36 @@ namespace AsyncAwaitPain.WPF
         private async void AsyncVoid_Click(object sender, RoutedEventArgs e)
         {
             // Works!
-            // Avoid Async Void!! This is the exception!
+            // This is the one allowable case to use Async Void
             await Delay();
         }
+
+        private void AbandonTryCatch_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Delay();
+            }
+            catch (Exception ex)
+            {
+                // Exception is not caught
+                MessageBox.Show($"Exception: {ex.Message}");
+            }
+        }
+
+        private async void AsyncVoidTryCatch_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await Delay();
+            }
+            catch (Exception ex)
+            {
+                // Exception is caught
+                MessageBox.Show($"Exception: {ex.Message}");
+            }
+        }
+
+
     }
 }

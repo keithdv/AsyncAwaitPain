@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AsyncAwaitPain.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="MainWindow" Height="400" Width="525"
         x:Name="mainWindow">
     <Window.Resources>
 
@@ -20,21 +20,23 @@
             <RowDefinition Height="Auto "></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBlock Text="{Binding Path=DelayCount, ElementName=mainWindow, FallbackValue=NaN}"></TextBlock>
-            <TextBlock Text="{Binding Path=MethodCount, ElementName=mainWindow, FallbackValue=NaN}"></TextBlock>
-            <Button x:Name="Abandon" Click="Abandon_Click">Abandon</Button>
-            <Button x:Name="Wait" Click="Wait_Click">Wait</Button>
+
+        <local:Intro Grid.Column="0"></local:Intro>
+        <local:DeadlockView Grid.Column="1"></local:DeadlockView>
+        <local:ExceptionView Grid.Column="2"></local:ExceptionView>
+        <local:AsyncConstructorView Grid.Row="1"></local:AsyncConstructorView>
+        <local:AsyncEventView Grid.Row="1" Grid.Column="1"></local:AsyncEventView>
+        <StackPanel Grid.Column="2" Grid.Row="1">
             <Button x:Name="Collect" Click="Collect_Click">GC Collect</Button>
             <TextBlock>
                 <Run>Thread Count</Run>
                 <Run Text="{Binding Path=ThreadCount, ElementName=mainWindow}"></Run>
             </TextBlock>
+
+            <TextBlock>Unhandled Task Exception</TextBlock>
+            <RadioButton x:Name="TaskEventEnabled"  Checked="TaskEventEnabled_Checked" IsChecked="False" >Enable</RadioButton>
+            <RadioButton x:Name="TaskEventDisable" Checked="TaskEventDisable_Checked" IsChecked="True">Disable</RadioButton>
         </StackPanel>
-        <local:Exception Grid.Column="1"></local:Exception>
-        <local:ConfigureAwait Grid.Column="2"></local:ConfigureAwait>
-        <local:AsyncConstructorView Grid.Row="1"></local:AsyncConstructorView>
-        <local:AsyncEventView Grid.Row="1" Grid.Column="1"></local:AsyncEventView>
     </Grid>
 
 </Window>

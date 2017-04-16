@@ -1,18 +1,7 @@
-﻿using AsyncAwaitPain.Lib.Constructor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using AsyncAwaitPain.Lib.Constructor;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AsyncAwaitPain.WPF
 {
@@ -26,33 +15,39 @@ namespace AsyncAwaitPain.WPF
             InitializeComponent();
         }
 
-        public AsyncConstructor AsyncConstructor
+
+
+        public object Result
         {
-            get { return (AsyncConstructor)GetValue(AsyncConstructorProperty); }
-            set { SetValue(AsyncConstructorProperty, value); }
+            get { return (object)GetValue(ResultProperty); }
+            set { SetValue(ResultProperty, value); }
         }
 
-        public static readonly DependencyProperty AsyncConstructorProperty =
-            DependencyProperty.Register("AsyncConstructor", typeof(AsyncConstructor), typeof(AsyncConstructor), null);
+        // Using a DependencyProperty as the backing store for Result.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ResultProperty =
+            DependencyProperty.Register("Result", typeof(object), typeof(AsyncConstructorView), new PropertyMetadata(null));
+
+
 
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
-            AsyncConstructor = new AsyncConstructor();
+            Result = new AsyncConstructor();
         }
 
         private void Exception_Click(object sender, RoutedEventArgs e)
         {
-            //AsyncConstructor = new AsyncConstructorException();
+            // Exception not caught
+            Result = new AsyncConstructorException();
         }
 
         private async void Initialize_Click(object sender, RoutedEventArgs e)
         {
-            //var o = new AsyncConstructorInitialize();
+            var o = new AsyncConstructorInitialize();
 
-            //AsyncConstructor = o;
+            Result = o;
 
-            //await o.InitializeAsync();
+            await o.InitializeAsync();
 
         }
 
@@ -60,9 +55,9 @@ namespace AsyncAwaitPain.WPF
         {
             var o = new AsyncConstructorInitializeException();
 
-            //AsyncConstructor = o;
+            Result = o;
 
-            //await o.Initialize();
+            await o.InitializeAsync();
         }
     }
 }

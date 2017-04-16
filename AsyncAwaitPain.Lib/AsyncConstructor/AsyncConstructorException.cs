@@ -16,7 +16,7 @@ namespace AsyncAwaitPain.Lib.Constructor
             {
                 if (x.Exception != null)
                 {
-                    throw x.Exception;
+                    throw x.Exception; // This accomplishes nothing!
                 }
             });
 
@@ -24,9 +24,14 @@ namespace AsyncAwaitPain.Lib.Constructor
 
         private async Task Delay()
         {
-            await Task.Delay(5);
-            Message = "Exception";
-            throw new Exception("Failure");
+            await Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                throw new Exception("Failure");
+            });
+
+            Message = "Completed";
+            Completed = true;
         }
 
         private string _message = "Started";
@@ -43,6 +48,16 @@ namespace AsyncAwaitPain.Lib.Constructor
             }
         }
 
+        private bool _completed;
 
+        public bool Completed
+        {
+            get { return _completed; }
+            set
+            {
+                _completed = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Completed)));
+            }
+        }
     }
 }

@@ -17,7 +17,6 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
         /// <param name="item"></param>
         /// <returns></returns>
         Task AddAsync(T item);
-        Task AddAsyncEx(T item);
 
         Task SimpleAddAsync(T item);
     }

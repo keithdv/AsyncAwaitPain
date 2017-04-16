@@ -14,6 +14,8 @@ namespace AsyncAwaitPain.Lib.Constructor
 
             Completed = false;
 
+            // Very tempting to do
+            // However exceptions are lost 
             Delay().ContinueWith(x =>
             {
                 if (x.Exception != null)
@@ -26,7 +28,11 @@ namespace AsyncAwaitPain.Lib.Constructor
 
         private async Task Delay()
         {
-            await Task.Delay(5);
+            await Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+            });
+
             Message = "Completed";
             Completed = true;
         }

@@ -7,12 +7,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="ucAsyncConstructor">
-    <StackPanel>
-        <TextBlock>Async Constructor</TextBlock>
-        <TextBlock Text="{Binding Path=AsyncConstructor.Message, ElementName=ucAsyncConstructor, FallbackValue=NaN, Mode=OneWay}"></TextBlock>
-        <Button x:Name="New" Click="New_Click">New</Button>
-        <Button x:Name="Exception" Click="Exception_Click">Exception</Button>
-        <Button x:Name="Initialize" Click="Initialize_Click">Initialize</Button>
-        <Button x:Name="InitializeException" Click="InitializeException_Click">Initialize Exception</Button>
-    </StackPanel>
+    <Border>
+        <StackPanel>
+            <TextBlock>Async Constructor</TextBlock>
+            <TextBlock Text="{Binding Path=Result.Message, ElementName=ucAsyncConstructor, FallbackValue=NaN, Mode=OneWay}"></TextBlock>
+            <Button x:Name="New" Click="New_Click">New</Button>
+            <Button x:Name="Exception" Click="Exception_Click">Exception</Button>
+            <Button x:Name="Initialize" Click="Initialize_Click">Initialize</Button>
+            <Button x:Name="InitializeException" Click="InitializeException_Click">Initialize Exception</Button>
+        </StackPanel>
+    </Border>
 </UserControl>

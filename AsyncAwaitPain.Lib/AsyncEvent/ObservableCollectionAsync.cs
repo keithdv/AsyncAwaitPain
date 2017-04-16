@@ -1,5 +1,4 @@
-﻿using Nito.AsyncEx;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -92,35 +91,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
             return t;
 
         }
-
-        private static AsyncAutoResetEvent areAsync = new AsyncAutoResetEvent(true);
-
-        public async Task AddAsyncEx(T item)
-        {
-
-            // Since there is only one instance of _collectionChangeTask
-            // available we have to be careful not to overwrite it during multithreaded operations
-            // But you cannot use Monitor.Enter and Monitor.Exit within an asyncrnous block of code
-
-            await areAsync.WaitAsync(); // Close gate - only allow one thread thru
-
-            Task t = null;
-
-            try
-            {
-                base.Add(item);
-                t = _collectionChangedTask;
-            }
-            catch (Exception)
-            {
-                areAsync.Set(); // Open gate - Gate can be opened by any thread
-                throw;
-            }
-
-            areAsync.Set(); // Open gate - Gate can be opened by any thread
-            await t;
-
-        }
+        
 
     }
 }

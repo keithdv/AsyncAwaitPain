@@ -33,6 +33,19 @@ namespace AsyncAwaitPain.WPF
 
         }
 
+
+        public int ThreadCount
+        {
+            get { return (int)GetValue(ThreadCountProperty); }
+            set { SetValue(ThreadCountProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ThreadCount.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ThreadCountProperty =
+            DependencyProperty.Register("ThreadCount", typeof(int), typeof(Intro), new PropertyMetadata(0));
+
+
+
         public void _threadCountTimer_CallBack(object state)
         {
             var context = (SynchronizationContext)state;
@@ -45,64 +58,27 @@ namespace AsyncAwaitPain.WPF
         }
 
 
-        public int DelayCount
-        {
-            get { return (int)GetValue(DelayCountProperty); }
-            set { SetValue(DelayCountProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for DelayCount.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DelayCountProperty =
-            DependencyProperty.Register("DelayCount", typeof(int), typeof(MainWindow), new PropertyMetadata(0));
-
-
-        public int MethodCount
-        {
-            get { return (int)GetValue(MethodCountProperty); }
-            set { SetValue(MethodCountProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Count.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MethodCountProperty =
-            DependencyProperty.Register("MethodCount", typeof(int), typeof(MainWindow), new PropertyMetadata(0));
-
-
-
-        public int ThreadCount
-        {
-            get { return (int)GetValue(ThreadCountProperty); }
-            set { SetValue(ThreadCountProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ThreadCount.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ThreadCountProperty =
-            DependencyProperty.Register("ThreadCount", typeof(int), typeof(MainWindow), new PropertyMetadata(0));
-
-
-
-        private async Task Delay()
-        {
-            await Task.Delay(50);
-            DelayCount += 1;
-        }
-
-        private void Abandon_Click(object sender, RoutedEventArgs e)
-        {
-            Delay();
-            MethodCount = MethodCount + 1;
-        }
-        private void Wait_Click(object sender, RoutedEventArgs e)
-        {
-            if (!Delay().Wait(500))
-            {
-                MessageBox.Show("Blocked");
-            }
-        }
 
 
         private void Collect_Click(object sender, RoutedEventArgs e)
         {
             GC.Collect();
         }
+
+
+        public static bool ShowUnhandledTaskExceptionMessageBox { get; set; }
+        private void TaskEventEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowUnhandledTaskExceptionMessageBox = true;
+            this.TaskEventDisable.IsChecked = false;
+        }
+
+        private void TaskEventDisable_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowUnhandledTaskExceptionMessageBox = false;
+            this.TaskEventEnabled.IsChecked = false;
+        }
+
+
     }
 }

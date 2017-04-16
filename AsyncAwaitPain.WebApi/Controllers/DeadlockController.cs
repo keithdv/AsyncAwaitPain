@@ -26,11 +26,11 @@ namespace AsyncAwaitPain.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("AsyncMethod")]
-        public async Task<IHttpActionResult> AsyncMethod()
+        [Route("AsyncTask")]
+        public async Task<IHttpActionResult> AsyncTask()
         {
+            // Correct - no issues
             await Delay();
-
             return Ok(delayFinished);
         }
 
@@ -41,12 +41,17 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
             if (!Delay().Wait(TimeConstants._5seconds)) // If I don't provide a timeout forever deadlocked
             {
-                delayFinished = "Deadlock"; // Deadlock - both threads trying to access the same context
+                delayFinished = "Deadlock"; // Deadlock - on completion task attempts to post on blocked thread - Deadlock
             }
 
             return Ok(delayFinished);
         }
 
+
+        /// <summary>
+        ///  Is ConfigureAwait the answer??
+        /// </summary>
+        /// <returns></returns>
         public async Task DelayConfigureAwaitFalse()
         {
             delayFinished = "Failure";

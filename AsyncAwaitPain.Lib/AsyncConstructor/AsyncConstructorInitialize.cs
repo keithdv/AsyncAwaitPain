@@ -14,7 +14,7 @@ namespace AsyncAwaitPain.Lib.Constructor
 
         public async Task InitializeAsync() // IInitialize interface
         {
-            await Task.Delay(5);
+            await Task.Delay(1000);
             Message = "Completed";
             Completed = true;
         }
@@ -31,6 +31,7 @@ namespace AsyncAwaitPain.Lib.Constructor
             }
         }
 
+
         private bool _completed;
 
         public bool Completed
@@ -42,5 +43,6 @@ namespace AsyncAwaitPain.Lib.Constructor
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Completed)));
             }
         }
+
     }
 }

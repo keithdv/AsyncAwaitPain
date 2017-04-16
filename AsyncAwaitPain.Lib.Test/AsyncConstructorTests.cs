@@ -24,6 +24,27 @@ namespace AsyncAwaitPain.Lib.Test
         }
 
         [TestMethod]
+        public async Task YieldException()
+        {
+            // The unit test completes
+            // but the exception is lost!
+            var o = new AsyncConstructorException();
+
+
+            for (var i = 0; i < 100 && o.Completed == false; i++) // Infinite loop
+            {
+                await Task.Yield();
+                await Task.Delay(10);
+            }
+
+            // Not completed and no exception raised
+            // Exception is lost
+            Assert.IsTrue(o.Completed);
+
+        }
+
+
+        [TestMethod]
         public async Task Initialize()
         {
             var o = new AsyncConstructorInitialize();
@@ -39,7 +60,7 @@ namespace AsyncAwaitPain.Lib.Test
         {
             var o = new AsyncConstructorInitializeException();
 
-            await o.Initialize();
+            await o.InitializeAsync();
             
         }
 

@@ -17,7 +17,7 @@ namespace AsyncAwaitPain.Lib.Test
     public class CustomTaskTests
     {
 
-        private CustomTask MethodAsync()
+        private CustomTask AsyncMethod()
         {
             CustomTask task = new CustomTask();
 
@@ -34,7 +34,7 @@ namespace AsyncAwaitPain.Lib.Test
 
         private void AsyncVoid()
         {
-            MethodAsync();
+            AsyncMethod();
         }
 
         [TestMethod]

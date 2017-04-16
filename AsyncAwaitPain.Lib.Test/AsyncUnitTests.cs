@@ -16,28 +16,28 @@ namespace AsyncAwaitPain.Lib.Test
 
 
 
-        [TestMethod]
-        public async Task MoqRaiseEvent()
-        {
-            // Doesn't work
-            // Mock.Raise doesn't return the task!
+        //[TestMethod]
+        //public async Task MoqRaiseEvent()
+        //{
+        //    // Doesn't work
+        //    // Mock.Raise doesn't return the task!
 
-            var mockCollection = new Mock<IObservableCollectionAsync<string>>();
+        //    var mockCollection = new Mock<IObservableCollectionAsync<string>>();
 
-            Action raiseEvent = () => mockCollection.Raise(e => e.CollectionChangedAsync += null, (NotifyCollectionChangedEventArgs)null);
+        //    Action raiseEvent = () => mockCollection.Raise(e => e.CollectionChangedAsync += null, (NotifyCollectionChangedEventArgs)null);
 
-            mockCollection.Setup(x => x.AddAsync(It.IsAny<string>()))
-                .Callback(() => { raiseEvent(); })
-                .Returns(Task.CompletedTask);
+        //    mockCollection.Setup(x => x.AddAsync(It.IsAny<string>()))
+        //        .Callback(() => { raiseEvent(); })
+        //        .Returns(Task.CompletedTask);
 
-            var bo = new BusinessObjectAsync(mockCollection.Object);
+        //    var bo = new BusinessObjectAsync(mockCollection.Object);
 
-            await bo.OperationAsync();
-            await bo.OperationAsync();
-            await bo.OperationAsync();
+        //    await bo.OperationAsync();
+        //    await bo.OperationAsync();
+        //    await bo.OperationAsync();
 
-            Assert.AreEqual(3, bo.CompletedCount);
+        //    Assert.AreEqual(3, bo.CompletedCount);
 
-        }
+        //}
     }
 }
