@@ -21,9 +21,11 @@ namespace AsyncAwaitPain.WebApi.Controllers
         public async Task Delay()
         {
             delayFinished = "Failure";
-            await Task.Delay(TimeConstants._25milliseconds);
+            await Task.Delay(TimeConstants._500milliseconds);
             delayFinished = "Completed successfully";
         }
+
+
 
         [HttpGet]
         [Route("AsyncTask")]
@@ -40,7 +42,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
         {
             // I'm not yielding I'm blocking
             // No await - no ExecutionContext management
-            if (!Delay().Wait(TimeConstants._5seconds)) // If I don't provide a timeout forever deadlocked
+            if (!Delay().Wait(TimeConstants._1second)) // If I don't provide a timeout forever deadlocked
             {
                 delayFinished = "Deadlock"; // Deadlock - on completion task attempts to post on blocked thread - Deadlock
             }
@@ -48,6 +50,29 @@ namespace AsyncAwaitPain.WebApi.Controllers
             return Ok(delayFinished);
         }
 
+        public Task DelayTask()
+        {
+            delayFinished = "Failure";
+            return Task.Delay(TimeConstants._500milliseconds).ContinueWith(x =>
+            {
+                delayFinished = "Completed successfully";
+            });
+        }
+
+        [HttpGet]
+        [Route("WaitTask")]
+        public IHttpActionResult WaitTask()
+        {
+            // Still blocks even when Async/Await isn't involved
+            // Actually a little surprised by this...
+
+            if (!Delay().Wait(TimeConstants._1second)) // If I don't provide a timeout forever deadlocked
+            {
+                delayFinished = "Deadlock"; // Deadlock - on completion task attempts to post on blocked thread - Deadlock
+            }
+
+            return Ok(delayFinished);
+        }
 
         /// <summary>
         ///  Is ConfigureAwait the answer??
