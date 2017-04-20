@@ -38,7 +38,8 @@ namespace AsyncAwaitPain.WebApi.Controllers
         [Route("Wait")]
         public IHttpActionResult Wait()
         {
-
+            // I'm not yielding I'm blocking
+            // No await - no ExecutionContext management
             if (!Delay().Wait(TimeConstants._5seconds)) // If I don't provide a timeout forever deadlocked
             {
                 delayFinished = "Deadlock"; // Deadlock - on completion task attempts to post on blocked thread - Deadlock
@@ -55,7 +56,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
         public async Task DelayConfigureAwaitFalse()
         {
             delayFinished = "Failure";
-            await Task.Delay(TimeConstants._25milliseconds).ConfigureAwait(false);
+            await Task.Delay(TimeConstants._1second).ConfigureAwait(false);
             delayFinished = "Completed successfully";
         }
 
@@ -83,7 +84,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
         public async Task DelayConfigureAwaitFalseNestedB()
         {
-            await Task.Delay(50);
+            await Task.Delay(TimeConstants._1second).ConfigureAwait(false);
             delayFinished = "Completed successfully";
         }
 

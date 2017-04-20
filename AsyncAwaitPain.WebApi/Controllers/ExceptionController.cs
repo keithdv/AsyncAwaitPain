@@ -18,7 +18,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
         public async Task DelayThrowException()
         {
-            await Task.Delay(TimeConstants._25milliseconds).ConfigureAwait(false); // ConfigureAwaitFalse - Won't block
+            await Task.Delay(TimeConstants._500milliseconds).ConfigureAwait(false); // ConfigureAwaitFalse - Won't block
             throw new Exception("Failure");
         }
 
@@ -84,7 +84,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
         public IHttpActionResult Wait()
         {
             // Works because of ConfigureAwait(false)
-            if (!DelayThrowException().Wait(TimeConstants._500milliseconds))
+            if (!DelayThrowException().Wait(TimeConstants._1second))
             {
                 delayFinished = "Blocked";
             }

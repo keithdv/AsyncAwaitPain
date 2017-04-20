@@ -18,7 +18,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
         public async Task Delay()
         {
             delayFinished = "Failure";
-            await Task.Delay(50);
+            await Task.Delay(TimeConstants._1second);
             delayFinished = "Completed successfully";
         }
 

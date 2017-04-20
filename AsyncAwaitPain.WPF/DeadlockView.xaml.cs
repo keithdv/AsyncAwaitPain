@@ -45,6 +45,9 @@ namespace AsyncAwaitPain.WPF
         private void Deadlock_Click(object sender, RoutedEventArgs e)
         {
             // Deadlocks every time
+            // I'm not yielding I'm blocking
+            // No await - no ExecutionContext management
+
             if (!Delay().Wait(TimeConstants._1second))
             {
                 MessageBox.Show("Deadlock");

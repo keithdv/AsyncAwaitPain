@@ -49,9 +49,10 @@ namespace AsyncAwaitPain.WPF
 
         private async Task Delay()
         {
-            await Task.Delay(TimeConstants._500milliseconds);
+            await Task.Delay(TimeConstants._1second);
             DelayCount += 1;
         }
+
 
         private void Abandon_Click(object sender, RoutedEventArgs e)
         {
@@ -64,6 +65,9 @@ namespace AsyncAwaitPain.WPF
         private void Wait_Click(object sender, RoutedEventArgs e)
         {
             // Deadlocks every time
+
+            //Delay().Wait();
+
             if (!Delay().Wait(TimeConstants._1second))
             {
                 MessageBox.Show("Deadlock");
@@ -74,6 +78,7 @@ namespace AsyncAwaitPain.WPF
             }
         }
 
+        // Acceptable case to use Async Void
         private async void AsyncVoid_Click(object sender, RoutedEventArgs e)
         {
             // Correct

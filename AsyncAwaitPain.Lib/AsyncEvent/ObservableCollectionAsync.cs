@@ -10,6 +10,17 @@ using System.Threading.Tasks;
 namespace AsyncAwaitPain.Lib.AsyncEvent
 {
 
+    public delegate Task NotifyCollectionChangedAsyncEventHandler(object sender, NotifyCollectionChangedEventArgs e);
+
+    public interface INotifyCollectionChangedAsync
+    {
+        //
+        // Summary:
+        //     Occurs when the collection changes.
+        event NotifyCollectionChangedAsyncEventHandler CollectionChangedAsync;
+
+    }
+
     public class ObservableCollectionAsync<T> : ObservableCollection<T>, IObservableCollectionAsync<T>
     {
 

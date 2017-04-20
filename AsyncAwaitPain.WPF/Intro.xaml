@@ -18,7 +18,7 @@
                 <Run>Click Method Count:</Run>
                 <Run Text="{Binding Path=MethodCount, ElementName=ucIntro, FallbackValue=NaN}"></Run>
             </TextBlock>
-            <Button x:Name="AsyncVoid" Click="AsyncVoid_Click">Async Task</Button>
+            <Button x:Name="AsyncVoid" Click="AsyncVoid_Click">Async Void</Button>
             <Button x:Name="Abandon" Click="Abandon_Click">Abandon</Button>
             <Button x:Name="Wait" Click="Wait_Click">Wait</Button>
 
