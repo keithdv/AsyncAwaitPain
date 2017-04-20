@@ -18,7 +18,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
 
         private async Task Collection_CollectionChangedAsync(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            await Task.Delay(10);
+            await Task.Delay(1000);
             lock (_lock)
             {
                 CompletedCount += 1;

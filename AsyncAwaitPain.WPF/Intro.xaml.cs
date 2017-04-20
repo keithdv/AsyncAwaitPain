@@ -66,7 +66,7 @@ namespace AsyncAwaitPain.WPF
         {
             // Deadlocks every time
 
-            //Delay().Wait();
+            Delay().Wait();
 
             if (!Delay().Wait(TimeConstants._1second))
             {

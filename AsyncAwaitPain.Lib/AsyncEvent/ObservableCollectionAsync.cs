@@ -37,7 +37,6 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
         {
             base.OnCollectionChanged(e);
             _collectionChangedTask = CollectionChangedAsync?.Invoke(this, e);
-
         }
 
         public Task SimpleAddAsync(T item)
