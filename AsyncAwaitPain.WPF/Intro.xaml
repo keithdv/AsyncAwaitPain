@@ -11,11 +11,11 @@
         <StackPanel>
             <TextBlock>Intro</TextBlock>
             <TextBlock >
-                <Run>Delay Method Count:</Run>
+                <Run>Delay Count:</Run>
                 <Run Text="{Binding Path=DelayCount, ElementName=ucIntro, FallbackValue=NaN}"></Run>
             </TextBlock>
             <TextBlock >
-                <Run>Click Method Count:</Run>
+                <Run>Method Count:</Run>
                 <Run Text="{Binding Path=MethodCount, ElementName=ucIntro, FallbackValue=NaN}"></Run>
             </TextBlock>
             <Button x:Name="AsyncVoid" Click="AsyncVoid_Click">Async Void</Button>

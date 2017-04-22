@@ -47,9 +47,9 @@ namespace AsyncAwaitPain.Lib.Test
             // This should fail like AsyncEventTests.BusinessObject_Simple_MultipleThreads!!!
             List<Task> tasks = new List<Task>();
 
-            tasks.Add(Task.Run(() => collection.SimpleAddAsync("value")));
-            tasks.Add(Task.Run(() => collection.SimpleAddAsync("value")));
-            tasks.Add(Task.Run(() => collection.SimpleAddAsync("value")));
+            tasks.Add(Task.Run(() => collection.AddAsync("value")));
+            tasks.Add(Task.Run(() => collection.AddAsync("value")));
+            tasks.Add(Task.Run(() => collection.AddAsync("value")));
 
             await Task.WhenAll(tasks);
 

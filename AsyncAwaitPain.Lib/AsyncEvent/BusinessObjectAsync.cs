@@ -34,11 +34,6 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
             return Collection.AddAsync("value");
         }
 
-        public Task OperationSimpleAsync()
-        {
-            return Collection.SimpleAddAsync("value");
-        }
-
         private int _CompletedCount;
 
         public event PropertyChangedEventHandler PropertyChanged;

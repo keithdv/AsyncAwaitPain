@@ -39,7 +39,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
             _collectionChangedTask = CollectionChangedAsync?.Invoke(this, e);
         }
 
-        public Task SimpleAddAsync(T item)
+        public Task AddAsync(T item)
         {
             base.Add(item);
             return _collectionChangedTask;
@@ -75,7 +75,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
         // Ensure only one thread is adding or removing items
         private static AutoResetEvent are = new AutoResetEvent(true);
 
-        public Task AddAsync(T item)
+        public Task AddAsync_ThreadSafe(T item)
         {
 
             // Since there is only one instance of _collectionChangeTask

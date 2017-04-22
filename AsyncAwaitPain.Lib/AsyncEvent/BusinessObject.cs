@@ -18,6 +18,7 @@ namespace AsyncAwaitPain.Lib.AsyncEvent
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // Async Void does not work in WebApi or WPF
         private async void Collection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             await Task.Delay(1000);

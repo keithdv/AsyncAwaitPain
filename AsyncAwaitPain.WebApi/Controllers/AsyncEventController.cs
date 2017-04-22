@@ -23,7 +23,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
             bo.Operation();
 
-            return Ok(bo.CompletedCount);
+            return Ok($"Completed Count: {bo.CompletedCount}");
         }
 
         [HttpGet]
@@ -34,7 +34,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
             await bo.OperationAsync();
 
-            return Ok(bo.CompletedCount);
+            return Ok($"Completed Count: {bo.CompletedCount}");
         }
 
         [HttpGet]
@@ -45,7 +45,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
             bo.Operation();
 
-            return Ok(bo.CompletedCount);
+            return Ok($"Completed Count: {bo.CompletedCount}");
         }
 
         [HttpGet]
@@ -56,7 +56,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
             await bo.OperationAsync();
 
-            return Ok(bo.CompletedCount);
+            return Ok($"Completed Count: {bo.CompletedCount}");
         }
 
 
