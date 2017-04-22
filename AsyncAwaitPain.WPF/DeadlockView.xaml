@@ -12,10 +12,11 @@
             <TextBlock>Deadlock</TextBlock>
             <TextBlock Text="{Binding Path=ClickCount, ElementName=ucConfigureAwait, FallbackValue=NaN}"></TextBlock>
             <Button x:Name="Deadlock" Click="Deadlock_Click">Deadlock</Button>
-            <Button x:Name="Wait" Click="Wait_Click">Wait</Button>
-            <Button x:Name="AsyncVoid" Click="AsyncVoid_Click">Async Task</Button>
-            <Button x:Name="Library" Click="LibraryConfigureAwait_Click">Library</Button>
-            <Button x:Name="Example" Click="Example_Click">Example</Button>
+            <Button x:Name="ThreadDeadlock" Click="ThreadDeadlock_Click">Thread Deadlock</Button>
+            <Button x:Name="WaitFail" Click="WaitFail_Click">Wait - Fail</Button>
+            <Button x:Name="ThreadFail" Click="ThreadFail_Click">Thread Fail</Button>
+            <Button x:Name="WaitSucceed" Click="WaitSucceed_Click">Wait - Succeed</Button>
+            <Button x:Name="ThreadSucceed" Click="ThreadSucceed_Click">Thread Succeed</Button>
         </StackPanel>
     </Border>
 </UserControl>

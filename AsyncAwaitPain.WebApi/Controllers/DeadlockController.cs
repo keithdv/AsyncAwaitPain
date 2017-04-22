@@ -18,14 +18,13 @@ namespace AsyncAwaitPain.WebApi.Controllers
 
         private string delayFinished = string.Empty;
 
+
         public async Task Delay()
         {
             delayFinished = "Failure";
             await Task.Delay(TimeConstants._500milliseconds);
             delayFinished = "Completed successfully";
         }
-
-
 
         [HttpGet]
         [Route("AsyncTask")]
@@ -128,6 +127,7 @@ namespace AsyncAwaitPain.WebApi.Controllers
             return Ok(delayFinished);
 
         }
+
 
     }
 }

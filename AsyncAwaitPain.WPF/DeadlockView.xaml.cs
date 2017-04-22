@@ -40,90 +40,166 @@ namespace AsyncAwaitPain.WPF
         private async Task Delay()
         {
             await Task.Delay(TimeConstants._500milliseconds);
+
+            // Since there isn't a ConfigureAwait(false)
+            // this is in essence
+            //Dispatcher.BeginInvoke(() =>
+            //{
+
+            // This is also considered part of the Task
+            // so the Task isn't completed until this is completed
+            ClickCount += 1;
+
+            //});
         }
 
         private void Deadlock_Click(object sender, RoutedEventArgs e)
         {
             // Deadlocks every time
-            // I'm not yielding I'm blocking
-            // No await - no ExecutionContext management
+            // Tasks attempts to post "ClickCount += 1" on the UI thread using SynchronizationContext
 
-            if (!Delay().Wait(TimeConstants._1second))
+            if (!Delay().Wait(TimeConstants._5seconds))
             {
                 MessageBox.Show("Deadlock");
             }
         }
 
-        private async Task DelayConfigureAwaitFalse()
+        private AutoResetEvent taskWait = new AutoResetEvent(false);
+
+        private void TaskMethod(object data)
         {
-            // ConfigureAwait(false) the answer? 
-            // Not when there's a UI thread involved!
-            await Task.Delay(50).ConfigureAwait(false);
-            ClickCount += 1;
+            // do some work
+            Thread.Sleep(TimeConstants._500milliseconds);
+
+            // Run on the UI thread - this is what DispatcherSynchronizationContext does for us
+            // but wait the UI thread is blocked waiting for me (the "Task") to complete!
+            Dispatcher.Invoke(() =>
+            {
+                ClickCount++;
+            });
+
+            // Signal "Task" is completed
+            taskWait.Set();
         }
 
-        private void Wait_Click(object sender, RoutedEventArgs e)
+        private void ThreadDeadlock_Click(object sender, RoutedEventArgs e)
+        {
+            Thread taskThread = new Thread(TaskMethod);
+
+            taskThread.Start();
+
+            if (!taskWait.WaitOne(TimeConstants._5seconds))
+            {
+                MessageBox.Show("Deadlock");
+            }
+        }
+
+        private async Task DelayConfigureAwaitFalseFail()
+        {
+            // ConfigureAwait(false) the answer? Possibly
+            await Task.Delay(TimeConstants._500milliseconds).ConfigureAwait(false);
+
+            // Fails - We need this to run on the UI thread using Dispatcher.Invoke
+            ClickCount += 1;
+
+        }
+
+        private void WaitFail_Click(object sender, RoutedEventArgs e)
         {
             // This will cause an error when ClickCount is used
             // because this is data bound to 
             // which will try to access the control
             // but not on the UI context
-            if (!DelayConfigureAwaitFalse().Wait(TimeConstants._5seconds))
+            if (!DelayConfigureAwaitFalseFail().Wait(TimeConstants._5seconds))
             {
                 MessageBox.Show("Deadlock!");
             }
         }
 
-        private async void AsyncVoid_Click(object sender, RoutedEventArgs e)
-        {
-            // Same issue as Wait_Click
-            await DelayConfigureAwaitFalse();
-        }
-
-
-        private async Task DelayConfigureAwaitFalseInLibrary()
-        {
-            await Task.Delay(TimeConstants._1second).ConfigureAwait(false);
-            // ConfigureAwait(False) so we're in a new context
-            // Doesn't matter we're not updated any UI controls here
-
-        }
-
-        private async void LibraryConfigureAwait_Click(object sender, RoutedEventArgs e)
-        {
-            await DelayConfigureAwaitFalseInLibrary();
-
-            // Back in the UI Context since we didn't define ConfigureAwait(false)
-            // This allows shared business or framework libraries can have ConfigureAwait(false);
-
-            ClickCount += 1;
-        }
-
-        public static object _TaskCompleted = new object();
-        public static AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-
-        private void TaskMethod(Action callBack)
+        private void TaskMethodConfigureAwaitFalseFail(object data)
         {
             // do some work
+            Thread.Sleep(TimeConstants._500milliseconds);
 
-            // Run on the UI thread..but wait the UI thread is blocked waiting for me!
-            Dispatcher.Invoke(callBack);
-
-            // Notify that I'm completed
-            autoResetEvent.Set();
-        }
-
-        private void CallBack()
-        {
+            // Simulated ConfigureAwait(false) - Let execution continue on the thread
+            // Exception: This is not the UI thread
             ClickCount++;
+
+            // Signal TaskMethod is completed
+            taskWait.Set();
         }
 
-        private void Example_Click(object sender, RoutedEventArgs e)
+        private void ThreadFail_Click(object sender, RoutedEventArgs e)
         {
+            Thread taskThread = new Thread(TaskMethodConfigureAwaitFalseFail);
 
-            Task.Run(() => TaskMethod(CallBack));
+            taskThread.Start();
 
-            autoResetEvent.WaitOne(); // Block the UI thread
+            if (!taskWait.WaitOne(TimeConstants._5seconds))
+            {
+                MessageBox.Show("Deadlock");
+            }
+
         }
+
+        private async Task DelayConfigureAwaitFalseSucceed()
+        {
+            // ConfigureAwait(false) the answer? Possibly
+            await Task.Delay(TimeConstants._500milliseconds).ConfigureAwait(false);
+
+            // As long as the library doesn't update any UI controls using DataBinding
+            // this is ok! So use ConfigureAwait(false) in your libraries
+            // That's what Microsoft meant for you to do 
+            // The zen of async: Best practices for best performance - Alex Turner
+            // https://www.youtube.com/watch?v=vu2kEstfuc8
+        }
+
+        private void WaitSucceed_Click(object sender, RoutedEventArgs e)
+        {
+            // This will cause an error when ClickCount is used
+            // because this is data bound to 
+            // which will try to access the control
+            // but not on the UI context
+            if (!DelayConfigureAwaitFalseSucceed().Wait(TimeConstants._5seconds))
+            {
+                MessageBox.Show("Deadlock!");
+            }
+            // The DelayConfigureAwaitFalseSucceed method has completed
+            // so the task has completed
+            // Back in the UI Context
+            // Succeeds
+            ClickCount += 1;
+
+        }
+
+        private void TaskMethodConfigureAwaitFalseSucceed(object data)
+        {
+            // do some work
+            Thread.Sleep(TimeConstants._500milliseconds);
+
+            // Let execution continue on the thread (no more work)
+
+            // Signal TaskMethod is completed
+            taskWait.Set();
+        }
+
+        private void ThreadSucceed_Click(object sender, RoutedEventArgs e)
+        {
+            Thread taskThread = new Thread(TaskMethodConfigureAwaitFalseSucceed);
+
+            taskThread.Start();
+
+            if (!taskWait.WaitOne(TimeConstants._5seconds))
+            {
+                MessageBox.Show("Deadlock");
+            }
+
+            // Back on the UI thread
+            ClickCount++;
+
+        }
+
+
+
     }
 }
